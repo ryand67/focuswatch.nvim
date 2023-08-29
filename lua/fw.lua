@@ -1,30 +1,34 @@
 local fw = {}
 
+---starts the timer based on user input
+---@param arg string user input in format `#{mins, min, m}#{secs, sec, s}`
 function fw.start(arg)
-    local res = validate_and_process_args(arg)
-    P(res)
+    local times = validate_and_process_args(arg)
+    start_timers(times)
 end
 
 ---validates whether the arguments have the needed information
 ---@param args string the user passed arguments to the command
----@return table has minutes and seconds keys
+---@return table result minutes and seconds keys
 function validate_and_process_args(args)
     -- index of minutes start (not 0 indexed)
-    local minute_pos = string.find(args, "min") or string.find(args, "m")
+    local minute_pos = string.find(args, "m")
     local minute_amt
 
-    local offset
-
-    if minute_pos == nil then
-        offset = 0
-    else
+    if minute_pos ~= nil then
         minute_amt = string.sub(args, 0, minute_pos - 1) or "0"
-        offset = string.len(minute_pos) + string.len(minute_amt) + 1
     end
 
+    args = string.sub(args, minute_pos + 1, string.len(args))
 
-    local sec_pos = string.find(args, "secs") or string.find(args, "sec") or string.find(args, "s")
-    local sec_amt = string.sub(args, offset, sec_pos - 1) or 0
+    local sec_pos = string.find(args, "s")
+
+    local sec_amt
+    if sec_pos ~= nil then
+        sec_amt = string.sub(args, 0, sec_pos - 1)
+    else
+        sec_amt = "0"
+    end
 
     return {
         minutes = tonumber(minute_amt),
@@ -53,6 +57,9 @@ function fw.open_prompt()
 
     local buffer = vim.api.nvim_create_buf(false, true)
     local window = vim.api.nvim_open_win(buffer, true, settings)
+end
+
+function start_timers(times)
 end
 
 return fw
