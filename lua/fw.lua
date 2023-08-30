@@ -2,9 +2,19 @@ local fw = {}
 
 ---starts the timer based on user input
 ---@param arg string user input in format `#m#s`
-function fw.start(arg)
+function fw.start(arg, timer)
+    timer:stop()
+    if arg == "sw_start" or arg == "sw_stop" then
+
+    elseif arg == "timer_stop" then
+        print('Focuswatch timer has stopped')
+    else
+        use_timer(timer, arg)
+    end
+end
+
+function use_timer(timer, arg)
     local times = validate_and_process_args(arg)
-    local timer = vim.loop.new_timer()
     start_timer(timer, get_seconds(times))
 end
 
@@ -93,7 +103,6 @@ function start_timer(timer, seconds)
         if seconds == 0 then
             print("Focuswatch timer has finished")
             timer:stop()
-            timer:close()
         end
     end)
 end
