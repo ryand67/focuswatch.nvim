@@ -1,10 +1,11 @@
 local fw = {}
 
 ---starts the timer based on user input
----@param arg string user input in format `#{mins, min, m}#{secs, sec, s}`
+---@param arg string user input in format `#m#s`
 function fw.start(arg)
     local times = validate_and_process_args(arg)
-    start_timers(times)
+    local timer = vim.loop.new_timer()
+    start_timer(timer, get_seconds(times))
 end
 
 ---validates whether the arguments have the needed information
@@ -17,6 +18,9 @@ function validate_and_process_args(args)
 
     if minute_pos ~= nil then
         minute_amt = string.sub(args, 0, minute_pos - 1) or "0"
+    else
+        minute_amt = "0"
+        minute_pos = -1
     end
 
     args = string.sub(args, minute_pos + 1, string.len(args))
@@ -59,7 +63,34 @@ function fw.open_prompt()
     local window = vim.api.nvim_open_win(buffer, true, settings)
 end
 
-function start_timers(times)
+---get the amount of seconds off of the time object
+---@param times table
+---@return number amount of seconds based on the times object
+function get_seconds(times)
+    return (times.minutes * 60) + times.seconds
+end
+
+function start_timer(timer, seconds)
+    if seconds < 1 then
+        print("Must have at least 1 second(s)")
+        return
+    end
+
+    timer:start(1000, 1000, function()
+        seconds = seconds - 1
+        print(format_seconds(seconds))
+        if seconds == 0 then
+            print("Focuswatch timer has finished")
+            timer:stop()
+            timer:close()
+        end
+    end)
+end
+
+function format_seconds(seconds)
+    local minutes = tostring(math.floor(seconds / 60)) .. "m"
+    local seconds = tostring(seconds % 60) .. "s"
+    return minutes .. seconds
 end
 
 return fw
