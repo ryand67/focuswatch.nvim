@@ -1,4 +1,4 @@
-# focus_watch.nvim
+# focuswatch.nvim
 
 very simple nvim plugin to allow you to track time spent in a session in your editor.
 
