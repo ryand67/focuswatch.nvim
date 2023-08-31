@@ -4,10 +4,12 @@ local fw = {}
 ---@param arg string user input in format `#m#s`
 function fw.start(arg, timer)
     timer:stop()
-    if arg == "sw_start" or arg == "sw_stop" then
-
+    if arg == "sw_start" then
+        use_stopwatch(timer)
     elseif arg == "timer_stop" then
         print('Focuswatch timer has stopped')
+    elseif arg == "sw_stop" then
+        print('Focuswatch stopwatch has stopped')
     else
         use_timer(timer, arg)
     end
@@ -111,6 +113,14 @@ function format_seconds(seconds)
     local minutes = tostring(math.floor(seconds / 60)) .. "m"
     local seconds = tostring(seconds % 60) .. "s"
     return minutes .. seconds
+end
+
+function use_stopwatch(timer)
+    local seconds = 0
+    timer:start(1000, 1000, function()
+        seconds = seconds + 1
+        print(format_seconds(seconds))
+    end)
 end
 
 return fw
