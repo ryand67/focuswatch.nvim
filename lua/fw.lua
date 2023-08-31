@@ -1,7 +1,7 @@
 local fw = {}
 
 ---starts the timer based on user input
----@param arg string user input in format `#m#s`
+---@param arg string user input
 ---@param timer Timer global timer instance
 function fw.start(arg, timer)
     timer:stop()
