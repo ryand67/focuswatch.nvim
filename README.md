@@ -9,5 +9,13 @@ very simple nvim plugin to allow you to track time spent in a session in your ed
 `:Focuswatch sw_start` will start a stopwatch
 `:Focuswatch sw_stop` will stop the stopwatch
 
+Sample setup:
+```lua
+vim.keymap.set("n", "<leader>fwb", ":Focuswatch sw_start<CR>")
+vim.keymap.set("n", "<leader>fwe", ":Focuswatch sw_stop<CR>")
+vim.keymap.set("n", "<leader>fwtb", ":Focuswatch timer_start<CR>")
+vim.keymap.set("n", "<leader>fwte", ":Focuswatch timer_stop<CR>")
+```
+
 ## TODO
 * Better UI for countdown
