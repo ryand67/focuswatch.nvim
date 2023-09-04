@@ -1,9 +1,10 @@
-local fw = {}
+local ui = require('ui')
+local M = {}
 
 ---starts the timer based on user input
 ---@param arg string user input
 ---@param timer Timer global timer instance
-function fw.start(arg, timer)
+function M.start(arg, timer)
     timer:stop()
     if arg == "sw_start" then
         use_stopwatch(timer)
@@ -12,7 +13,9 @@ function fw.start(arg, timer)
     elseif arg == "sw_stop" then
         print('Focuswatch stopwatch has stopped')
     else
-        use_timer(timer, arg)
+        ui.input(function(line)
+            use_timer(timer, line)
+        end)
     end
 end
 
@@ -64,29 +67,6 @@ function validate_and_process_args(args)
     }
 end
 
-function fw.open_prompt()
-    local width = vim.api.nvim_get_option("columns")
-    local height = vim.api.nvim_get_option("lines")
-
-    local win_height = math.ceil(height * .05)
-    local win_width = math.ceil(width * .2)
-
-    local settings = {
-        focusable = true,
-        border = "rounded",
-        width = win_width,
-        height = win_height,
-        title = "hey",
-        -- relative = "editor",
-        external = true,
-        row = 50,
-        col = 5
-    }
-
-    local buffer = vim.api.nvim_create_buf(false, true)
-    local window = vim.api.nvim_open_win(buffer, true, settings)
-end
-
 ---get the amount of seconds off of the time object
 ---@param times table
 ---@return number amount of seconds based on the times object
@@ -124,4 +104,4 @@ function use_stopwatch(timer)
     end)
 end
 
-return fw
+return M

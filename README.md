@@ -8,5 +8,5 @@ very simple nvim plugin to allow you to track time spent in a session in your ed
 `:Focuswatch sw_start` will start a stopwatch
 `:Focuswatch sw_stop` will stop the stopwatch
 
-### TOODs
-- mainly just ui
+## TODO
+* Better UI for countdown
