@@ -21,6 +21,10 @@ end
 
 function use_timer(timer, arg)
     local times = validate_and_process_args(arg)
+    if times == nil then
+        error("Focuswatch Error: Please follow the required format: #m#s")
+        return
+    end
     start_timer(timer, get_seconds(times))
 end
 
@@ -50,15 +54,19 @@ function validate_and_process_args(args)
         sec_amt = "0"
     end
 
-    sec_amt = tonumber(sec_amt)
-    minute_amt = tonumber(minute_amt)
+    sec_amt = tonumber(sec_amt) or -1
+    minute_amt = tonumber(minute_amt) or -1
 
-    if minute_amt < 0 then
+    if minute_amt < 0 or minute_amt == nil then
         minute_amt = 0
     end
 
     if sec_amt < 0 then
         sec_amt = 0
+    end
+
+    if minute_amt == 0 and sec_amt == 0 then
+        return nil
     end
 
     return {
