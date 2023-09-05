@@ -2,12 +2,12 @@ local M = {}
 
 local ui = require('ui')
 
+local end_notify = "Press <CR>, q, or <Esc> to exit notification."
 ---starts the timer based on user input
 ---@param arg string user input
 ---@param timer Timer global timer instance
 function M.start(arg, timer)
     timer:stop()
-    local end_notify = "Press <CR>, q, or <Esc> to exit notification"
     if arg == "sw_start" then
         ui.notify('Stopwatch started. ' .. end_notify, ui.notify_levels.INFO)
         use_stopwatch(timer)
