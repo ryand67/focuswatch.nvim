@@ -35,6 +35,12 @@ end
 ---@param args string the user passed arguments to the command
 ---@return table result minutes and seconds keys
 function validate_and_process_args(args)
+    if tonumber(args) ~= nil then
+        return {
+            seconds = tonumber(args),
+            minutes = 0
+        }
+    end
     -- index of minutes start (not 0 indexed)
     local minute_pos = string.find(args, "m")
     local minute_amt
