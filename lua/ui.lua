@@ -44,7 +44,7 @@ end
 ---win_config for nvim ui
 ---@param prompt_width number width of prompt for use in calcultaing middle
 ---@param prompt string prompt to have in the input box
----@return config table table of config options
+---@return table table of config options
 function M.win_config(prompt_width, prompt)
     if prompt_width < 1 then
         prompt_width = 1
