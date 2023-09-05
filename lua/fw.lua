@@ -1,18 +1,21 @@
-local ui = require('ui')
 local M = {}
+
+local ui = require('ui')
 
 ---starts the timer based on user input
 ---@param arg string user input
 ---@param timer Timer global timer instance
 function M.start(arg, timer)
     timer:stop()
+    local end_notify = "Press <CR>, q, or <Esc> to exit notification"
     if arg == "sw_start" then
+        ui.notify('Stopwatch started. ' .. end_notify, ui.notify_levels.INFO)
         use_stopwatch(timer)
     elseif arg == "timer_stop" then
-        print('Focuswatch timer has stopped')
+        ui.notify('Timer has stopped. ' .. end_notify, ui.notify_levels.INFO)
     elseif arg == "sw_stop" then
-        print('Focuswatch stopwatch has stopped')
-    else
+        ui.notify('Stopwatch has stopped. ' .. end_notify, ui.notify_levels.INFO)
+    elseif arg == "timer_start" then
         ui.input(function(line)
             use_timer(timer, line)
         end)
@@ -22,7 +25,7 @@ end
 function use_timer(timer, arg)
     local times = validate_and_process_args(arg)
     if times == nil then
-        error("Focuswatch Error: Please follow the required format: #m#s")
+        ui.notify("Please follow the required format: #m#s", ui.notify_levels.ERROR)
         return
     end
     start_timer(timer, get_seconds(times))
@@ -92,7 +95,7 @@ function start_timer(timer, seconds)
         seconds = seconds - 1
         print(format_seconds(seconds))
         if seconds == 0 then
-            print("Focuswatch timer has finished")
+            ui.notify("Focuswatch timer has finished" .. end_notify, ui.notify_levels.INFO)
             timer:stop()
         end
     end)
@@ -104,6 +107,8 @@ function format_seconds(seconds)
     return minutes .. seconds
 end
 
+---Starts a stopwatch
+---@param timer any Global timer object
 function use_stopwatch(timer)
     local seconds = 0
     timer:start(1000, 1000, function()
