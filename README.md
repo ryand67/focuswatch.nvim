@@ -1,6 +1,6 @@
 # focuswatch.nvim
 
-very simple nvim plugin to allow you to track time spent in a session in your editor.
+simple nvim plugin to allow you to track time spent in a session in your editor.
 
 ## usage
 `:Focuswatch timer_start` will open an input that allows you to specify how much time to start a timer for
