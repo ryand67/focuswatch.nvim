@@ -78,7 +78,7 @@ function M.notify(message, level)
     local buffer = vim.api.nvim_create_buf(false, true)
     local window = vim.api.nvim_open_win(buffer, true, win_config)
     vim.api.nvim_buf_set_text(buffer, 0, 0, 0, 0, { message })
-    vim.api.nvim_set_option_value("readonly", true, { buf = buffer })
+    vim.api.nvim_buf_set_option(buffer, 'readonly', true)
 
 
     local close_win = function()
