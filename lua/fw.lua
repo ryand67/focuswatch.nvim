@@ -93,15 +93,18 @@ end
 
 function start_timer(timer, seconds)
     if seconds < 1 then
-        print("Must have at least 1 second(s)")
+        ui.notify("Must have at least 1 second(s)", ui.notify_levels.ERROR)
         return
     end
 
     timer:start(1000, 1000, function()
         seconds = seconds - 1
         print(format_seconds(seconds))
+
         if seconds == 0 then
-            ui.notify("Focuswatch timer has finished" .. end_notify, ui.notify_levels.INFO)
+            vim.schedule(function()
+                ui.notify("Focuswatch timer has finished" .. end_notify, ui.notify_levels.INFO)
+            end)
             timer:stop()
         end
     end)
