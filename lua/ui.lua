@@ -8,6 +8,8 @@ function M.window_center(input_width)
     }
 end
 
+M.namespace_id = vim.api.nvim_create_namespace('focuswatch')
+
 ---Launches input prompt
 ---@param on_confirm function function to run on confirm of input
 function M.input(on_confirm)
@@ -89,6 +91,37 @@ function M.notify(message, level)
     vim.keymap.set({ 'n', 'i', 'v' }, '<cr>', close_win, { buffer = buffer })
     vim.keymap.set("n", "<esc>", close_win, { buffer = buffer })
     vim.keymap.set("n", "q", close_win, { buffer = buffer })
+end
+
+function calc_line_num()
+    local win_width = vim.api.nvim_win_get_width(0)
+    local cur = vim.api.nvim_win_get_cursor(0)[1]
+
+    return cur - 1
+end
+
+---displays seconds left with virtual text
+---@param seconds string formatted string of time left in timer
+---@param ext_mark_id number | nil ext_mark id
+function M.display_seconds(seconds, ext_mark_id)
+    local buf = vim.api.nvim_get_current_buf()
+
+    if ext_mark_id ~= nil then
+        return vim.api.nvim_buf_set_extmark(buf, M.namespace_id, calc_line_num(), 0, {
+            virt_text_pos = "right_align",
+            id = ext_mark_id,
+            virt_text = { { seconds, '' } }
+        })
+    else
+        return vim.api.nvim_buf_set_extmark(buf, M.namespace_id, calc_line_num(), 0, {
+            virt_text_pos = "right_align",
+            virt_text = { { seconds, '' } }
+        })
+    end
+end
+
+function M.remove_seconds(ext_mark_id)
+    vim.api.nvim_buf_del_extmark(vim.api.nvim_get_current_buf(), M.namespace_id, ext_mark_id)
 end
 
 return M

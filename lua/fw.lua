@@ -8,6 +8,10 @@ local end_notify = "Press <CR>, q, or <Esc> to exit notification."
 ---@param timer Timer global timer instance
 function M.start(arg, timer)
     timer:stop()
+    if M.ext_mark_id ~= nil then
+        ui.remove_seconds(M.ext_mark_id)
+        M.ext_mark_id = nil
+    end
     if arg == "sw_start" then
         ui.notify('Stopwatch started. ' .. end_notify, ui.notify_levels.INFO)
         use_stopwatch(timer)
@@ -116,13 +120,17 @@ function format_seconds(seconds)
     return minutes .. seconds
 end
 
+M.ext_mark_id = nil
+
 ---Starts a stopwatch
 ---@param timer any Global timer object
 function use_stopwatch(timer)
     local seconds = 0
     timer:start(1000, 1000, function()
         seconds = seconds + 1
-        print(format_seconds(seconds))
+        vim.schedule(function()
+            M.ext_mark_id = ui.display_seconds(format_seconds(seconds), M.ext_mark_id)
+        end)
     end)
 end
 
