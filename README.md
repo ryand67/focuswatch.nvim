@@ -18,4 +18,4 @@ vim.keymap.set("n", "<leader>fwte", ":Focuswatch timer_stop<CR>")
 ```
 
 ## TODO
-* UI countdown follows cursor around which is preferable to printing in messages queue but still not perfect. Going to figure out how to make the virtual text countdown sticky.
+* UI countdown just goes to bottom line rather than sticking to bottom left
