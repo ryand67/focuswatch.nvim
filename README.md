@@ -1,6 +1,6 @@
 # focuswatch.nvim
 
-nvim timer plugin
+simple editor stopwatch/timer for neovim
 
 ## Usage
 `:Focuswatch timer_start` will open an input that allows you to specify how much time to start a timer for
