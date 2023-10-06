@@ -93,11 +93,13 @@ function M.notify(message, level)
     vim.keymap.set("n", "q", close_win, { buffer = buffer })
 end
 
-function calc_line_num()
-    local win_width = vim.api.nvim_win_get_width(0)
-    local cur = vim.api.nvim_win_get_cursor(0)[1]
-
-    return cur - 1
+local function calc_line_num()
+    local a = vim.api.nvim_exec2(":echo line('w$')", { output = true })
+    if a.output == nil or a.output == 1 then
+        return 1
+    else
+        return tonumber(a.output) - 1
+    end
 end
 
 ---displays seconds left with virtual text
